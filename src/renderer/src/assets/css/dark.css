@@ -1,0 +1,4 @@
+:root[theme = 'dark']{
+  --hoverBlock-button-bg :  rgba(50, 50, 50, 0.2);
+  --hoverBlock-button-bg-hover :  rgba(50, 50, 50, 0.7);
+}

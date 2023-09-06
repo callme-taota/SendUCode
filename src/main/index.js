@@ -3,19 +3,28 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+const macOptions = {
+  titleBarStyle: "hidden",
+  vibrancy: "light",
+  visualEffectState: "active",
+  resizable: false
+}
+
+const winOptions = {
+
+}
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 640,
     height: 900,
-    resizable: false,
-    transparent: true,
-    backgroundColor: '#00000000',
     show: false,
-    titleBarStyle: "hidden",
-    vibrancy: "light",
-    visualEffectState: "active",
+
+    backgroundMaterial: "acrylic",
     autoHideMenuBar: true,
+    frame: true,
+
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),

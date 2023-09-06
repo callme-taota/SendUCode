@@ -1,11 +1,17 @@
 <script setup>
-
+import {useAppStore} from "./store/modules/app.js"
+import hoverBlock from "./components/hoverBlock/hoverBlock.vue"
+const AppStore = useAppStore()
+console.log(AppStore.platform)
 </script>
 
 <template>
   <div class="background">
     <div class="container">
-      <div class="main"></div>
+      <div class="main">
+        <hoverBlock type="button">
+        </hoverBlock>
+      </div>
       <div class="bar"></div>
     </div>
   </div>
@@ -15,8 +21,8 @@
 .background {
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.55);
-  background-color: rgba(0, 0, 0, 0.65);
+  /* background-color: rgba(255, 255, 255, 0.55);
+  background-color: rgba(0, 0, 0, 0.65); */
 }
 .container{
   width: 100%;
