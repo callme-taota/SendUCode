@@ -7,7 +7,6 @@ const macOptions = {
   titleBarStyle: "hidden",
   vibrancy: "light",
   visualEffectState: "active",
-  resizable: false
 }
 
 const winOptions = {
@@ -20,10 +19,8 @@ function createWindow() {
     width: 640,
     height: 900,
     show: false,
-
-    backgroundMaterial: "acrylic",
     autoHideMenuBar: true,
-    frame: true,
+    resizable: false,
 
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {

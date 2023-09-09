@@ -1,4 +1,11 @@
 :root[theme = 'dark']{
-  --hoverBlock-button-bg :  rgba(50, 50, 50, 0.2);
-  --hoverBlock-button-bg-hover :  rgba(50, 50, 50, 0.7);
+  /* main */
+  --background : rgb(40,40,40);
+  --text : rgb(200,200,200);
+
+  /* hoverBlock */
+  --hoverBlock-button-bg :  rgba(50, 50, 50, 0);
+  --hoverBlock-button-bg-hover :  rgba(50, 50, 50, 0.8);
+  --hoverBlock-button-bg-active :  rgba(50, 50, 50, 0.65);
+  --hoverBlock-button-bg-select :  rgba(52, 120, 255, 0.9);
 }

@@ -1,4 +1,13 @@
 :root{
-  --hoverBlock-button-bg :  rgba(255, 255, 255, 0.9);
-  --hoverBlock-button-bg-hover :  rgba(255, 255, 255, 0.6);
+  /* main */
+  --background : rgb(250,250,250);
+  --text : rgb(40,40,40);
+
+
+  /* hoverBlock */
+  --hoverBlock-button-bg :  rgba(255, 255, 255, 0);
+  --hoverBlock-button-bg-hover :  rgba(255, 255, 255, 0.75);
+  --hoverBlock-button-bg-active :  rgba(255, 255, 255, 0.4);
+  --hoverBlock-button-bg-select :  rgba(0, 85, 255, 0.9);
+
 }
