@@ -1,30 +1,57 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, markRaw, onMounted } from 'vue'
+import router from '../router'
 import hoverBlock from '../components/hoverBlock/hoverBlock.vue'
-const buttonList = ref([
-  { active: true, index: 1, icon: '1' },
-  { active: false,index: 2,  icon: '2' },
-  { active: false,index: 3,  icon: '3' },
-  { active: false,index: 4,  icon: '4' }
-])
-const changeActive = (index) => {
-  let list = buttonList.value
-  for(let i = 0 ; i< list.length ; i++){
-    if(list[i].index == index){
-      list[i].active = true
-    }else{
-      list[i].active = false
+import icon from '../components/icon/icon.vue';
+
+import iHome from '../components/icon/icons/iHome.vue';
+import iHomeFill from '../components/icon/icons/iHomeFill.vue';
+import iSearch from '../components/icon/icons/iSearch.vue'
+import iTool from '../components/icon/icons/iTool.vue'
+import iToolFill from '../components/icon/icons/iToolFill.vue'
+import iSetting from '../components/icon/icons/iSetting.vue';
+import iSettingFill from '../components/icon/icons/iSettingFill.vue';
+
+onMounted(() => {
+  router.beforeEach((to, from) => {
+    let toPath = to.path
+    let list = buttonList.value
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].components == toPath) {
+        list[i].active = true
+      } else {
+        list[i].active = false
+      }
     }
-  }
-  buttonList.value = list
+    buttonList.value = list
+    if (toPath == '/user') {
+      userBtnActive.value = true
+    } else {
+      userBtnActive.value = false
+    }
+  })
+})
+const userBtnActive = ref(false)
+const buttonList = ref([
+  { active: true, index: 1, icon: markRaw(iHome), activeIcon: markRaw(iHomeFill), components: "/" },
+  { active: false, index: 2, icon: markRaw(iSearch), activeIcon: markRaw(iSearch), components: "/find" },
+  { active: false, index: 3, icon: markRaw(iTool), activeIcon: markRaw(iToolFill), components: "/tool" },
+  { active: false, index: 4, icon: markRaw(iSetting), activeIcon: markRaw(iSettingFill), components: "/setting" }
+])
+const userObj = { index: 5, components: "/user" }
+const changeActive = (btn) => {
+  router.push(btn.components)
 }
 </script>
 <template>
   <div class="bar">
     <div class="mediaPlayer"></div>
     <div class="buttonGroups">
-      <hoverBlock type="button" v-for="btn in buttonList" :key="btn.icon" :active="btn.active" @click="changeActive(btn.index)">{{ btn.icon }}</hoverBlock>
-      <hoverBlock type="user"></hoverBlock>
+      <hoverBlock type="button" v-for="btn in buttonList" :key="btn.icon" :active="btn.active" @click="changeActive(btn)">
+        <icon :icon="btn.active ? btn.activeIcon : btn.icon" height="20" width="20"
+          :color="btn.active ? '#222222' : '#000000'"></icon>
+      </hoverBlock>
+      <hoverBlock type="user" @click="changeActive(userObj)" :active="userBtnActive"></hoverBlock>
     </div>
   </div>
 </template>
@@ -37,9 +64,11 @@ const changeActive = (index) => {
   display: flex;
   padding: 0 30px;
 }
+
 .mediaPlayer {
   flex: 1;
 }
+
 .buttonGroups {
   padding-top: 15px;
   display: flex;

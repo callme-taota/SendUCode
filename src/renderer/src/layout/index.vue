@@ -6,7 +6,11 @@ import bar from "./bar.vue"
   <div class="background">
     <div class="container">
       <div class="main">
-        <router-view></router-view>
+        <router-view v-slot="{ Component }">
+          <transition name="fade">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
       <bar></bar>
     </div>
@@ -19,13 +23,15 @@ import bar from "./bar.vue"
   height: 100%;
   background-color: var(--background);
 }
-.container{
+
+.container {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-.main{
+
+.main {
   flex: 1;
 }
 </style>
