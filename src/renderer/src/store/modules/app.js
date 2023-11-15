@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { GetSystemType } from "../../utils"
 
 const matchMedia = window.matchMedia('(prefers-color-scheme: dark)')
-const changeListener = matchMedia.addEventListener("change", function() {
+export const changeListener = matchMedia.addEventListener("change", function() {
   if (this.matches) {
     document.documentElement.setAttribute('theme', 'dark');
   } else {
@@ -14,7 +14,7 @@ export const useAppStore = defineStore("appStore", {
   state: () => ({
     platform: GetSystemType(),
     isDeviceDarkTheme: matchMedia.matches,
-    themeSetting: "auto"
+    themeSetting: "auto",
   }),
   actions: {
     SetThemeLight() {

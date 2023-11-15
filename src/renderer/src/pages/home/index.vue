@@ -1,9 +1,7 @@
 <script setup>
-import inputBubbles from "../../components/inputBubbles/index.vue";
 </script>
 <template>
   <div class="home-cont">
-    <inputBubbles></inputBubbles>
   </div>
 </template>
 <style>
