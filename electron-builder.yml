@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: fun.callmetaota
 productName: cloudbox
 directories:
   buildResources: build

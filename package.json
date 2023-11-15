@@ -1,10 +1,10 @@
 {
   "name": "cloudbox",
-  "version": "1.0.0",
-  "description": "An Electron application with Vue",
+  "version": "beta1.0.1",
+  "description": "A windows style like applicationn with Vue",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://www.electronjs.org",
+  "author": "Taota",
+  "homepage": "http://blog.callmetaota.fun",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
