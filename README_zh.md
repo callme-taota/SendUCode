@@ -1,4 +1,4 @@
-# Cloudbox [English](https://github.com/callme-taota/blob/master/README_zh.md)
+# Cloudbox [English](https://github.com/callme-taota/cloudbox/blob/master/README.md)
 
 ## 关于
 
