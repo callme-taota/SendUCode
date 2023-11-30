@@ -25,7 +25,7 @@ func getMsgs(c *gin.Context) {
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		tolog.Log().Warningf("limit need integer , err: ", err)
+		tolog.Log().Warningf("limit need integer , err: %e", err)
 		c.JSON(http.StatusOK, gin.H{"msg": "limit need integer"})
 		return
 	}
@@ -81,7 +81,7 @@ func broadcastMessage(session string, message cache.Message) {
 	for id, client := range clients[session] {
 		err := client.WriteMessage(websocket.TextMessage, messageJSON)
 		if err != nil {
-			tolog.Log().Errorf("Error sending message to user %s: %e", id, err)
+			tolog.Log().Errorf("Error sending message to user %d: %e", id, err)
 		}
 	}
 }

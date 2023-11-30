@@ -13,7 +13,7 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	// 获取项目根目录路径
 	rootDir, err := os.Getwd()
 	if err != nil {
-		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
+		tolog.Log().Errorf("jsonReader %e", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
@@ -25,7 +25,7 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	// 读取文件内容
 	fileContent, err := os.ReadFile(absPath)
 	if err != nil {
-		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
+		tolog.Log().Errorf("jsonReader %e", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
@@ -33,7 +33,7 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	var jsonData map[string]interface{}
 	err = json.Unmarshal(fileContent, &jsonData)
 	if err != nil {
-		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
+		tolog.Log().Errorf("jsonReader %e", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
