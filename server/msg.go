@@ -37,8 +37,7 @@ func getMsgs(c *gin.Context) {
 
 	tolog.Log().Infof("Get message for user: %s", userid).PrintLog()
 	msgs, err := cache.GetMessagesFromSortedSetLimit(session, limit)
-	messageJSON, _ := json.Marshal(msgs)
-	c.JSON(http.StatusOK, messageJSON)
+	c.JSON(http.StatusOK, msgs)
 }
 
 func newMsg(c *gin.Context) {
