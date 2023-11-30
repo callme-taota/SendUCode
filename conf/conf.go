@@ -14,8 +14,10 @@ type server struct {
 var Server server
 
 type cacheConf struct {
-	Host string
-	Port string
+	Host     string
+	Port     string
+	Password string
+	DB       string
 }
 
 var CacheConf cacheConf
@@ -23,27 +25,25 @@ var CacheConf cacheConf
 func InitConf() error {
 	confjson, err := utils.JSONReader("./conf/conf.json")
 	if err != nil {
-		tolog.Log().Context(fmt.Sprintln("jsonReader", err)).Type(tolog.ToLogStatusError).PrintLog().Write()
+		tolog.Log().Error(fmt.Sprintf("jsonReader%e", err)).PrintAndWriteSafe()
 		return err
 	}
+
 	serverMap := confjson["server"]
 	server := utils.JSONConvertToMapString(serverMap)
-	name := server["name"]
-	version := server["version"]
-	port := server["port"]
-	model := server["model"]
-	Server.Port = port
-	Server.Model = model
-	tolog.Log().Context("SendUCode-Server Conf Start").Type(tolog.ToLogStatusInfo).PrintLog().Write()
-	tolog.Log().Context(fmt.Sprintln("ServerName:", name)).Type(tolog.ToLogStatusInfo).PrintLog()
-	tolog.Log().Context(fmt.Sprintln("ServerVersion:", version)).Type(tolog.ToLogStatusInfo).PrintLog()
-	tolog.Log().Context(fmt.Sprintln("ServerPort:", port)).Type(tolog.ToLogStatusInfo).PrintLog()
-	tolog.Log().Context(fmt.Sprintln("Running on model:", model)).Type(tolog.ToLogStatusInfo).PrintLog()
+	name, version, port, model := server["name"], server["version"], server["port"], server["model"]
+	Server.Port, Server.Model = port, model
+
+	tolog.Log().Info("SendUCode-Server Conf Start").PrintAndWriteSafe()
+	tolog.Log().Infof("ServerName:%s", name).PrintAndWriteSafe()
+	tolog.Log().Infof("ServerVersion:%s", version).PrintAndWriteSafe()
+	tolog.Log().Infof("ServerPort:%s", port).PrintAndWriteSafe()
+	tolog.Log().Infof("Running on model:%s", model).PrintAndWriteSafe()
+
 	cacheMap := confjson["redis"]
 	cache := utils.JSONConvertToMapString(cacheMap)
-	cacheHost := cache["host"]
-	cachePort := cache["port"]
-	CacheConf.Host = cacheHost
-	CacheConf.Port = cachePort
+	cacheHost, cachePort, cachePassword, cacheDB := cache["host"], cache["port"], cache["password"], cache["db"]
+	CacheConf.Host, CacheConf.Port, CacheConf.Password, CacheConf.DB = cacheHost, cachePort, cachePassword, cacheDB
+
 	return nil
 }

@@ -13,19 +13,19 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	// 获取项目根目录路径
 	rootDir, err := os.Getwd()
 	if err != nil {
-		tolog.Log().Context(fmt.Sprintln("jsonReader", err)).Type(tolog.ToLogStatusError).PrintLog().Write()
+		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
 	// 拼接文件路径
 	absPath := filepath.Join(rootDir, filePath)
 
-	fmt.Println("读取JSON文件:", absPath)
+	tolog.Log().Infof("读取JSON文件:%s", absPath).PrintLog()
 
 	// 读取文件内容
 	fileContent, err := os.ReadFile(absPath)
 	if err != nil {
-		tolog.Log().Context(fmt.Sprintln("jsonReader", err)).Type(tolog.ToLogStatusError).PrintLog().Write()
+		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
@@ -33,7 +33,7 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	var jsonData map[string]interface{}
 	err = json.Unmarshal(fileContent, &jsonData)
 	if err != nil {
-		tolog.Log().Context(fmt.Sprintln("jsonReader", err)).Type(tolog.ToLogStatusError).PrintLog().Write()
+		tolog.Log().Errorf("jsonReader", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
@@ -58,7 +58,7 @@ func JSONConvertToMapString(originalMap interface{}) map[string]string {
 		default:
 			// 其他类型可以根据需要进行处理
 			// 这里可以添加额外的类型转换规则
-			fmt.Printf("Unsupported type for key %s\n", key)
+			tolog.Log().Warningf("Unsupported type for key %s", key).PrintAndWriteSafe()
 		}
 	}
 
