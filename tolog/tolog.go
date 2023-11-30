@@ -94,7 +94,7 @@ func (l *ToLog) Info(ctx string) *ToLog {
 // Infof sets the log type to "info" and sets the formatted log context for an existing ToLog instance.
 func (l *ToLog) Infof(format string, a ...any) *ToLog {
 	l.logType = ToLogStatusInfo
-	l.logContext = fmt.Sprintf(format, a)
+	l.logContext = fmt.Sprintf(format, a...)
 	CreateFullLog(l)
 	return l
 }
@@ -102,7 +102,7 @@ func (l *ToLog) Infof(format string, a ...any) *ToLog {
 // Infoln sets the log type to "info" and sets the log context with a newline for an existing ToLog instance.
 func (l *ToLog) Infoln(a ...any) *ToLog {
 	l.logType = ToLogStatusInfo
-	l.logContext = fmt.Sprintln(a)
+	l.logContext = fmt.Sprintln(a...)
 	CreateFullLog(l)
 	return l
 }
@@ -118,7 +118,7 @@ func (l *ToLog) Warning(ctx string) *ToLog {
 // Warningf sets the log type to "warning" and sets the formatted log context for an existing ToLog instance.
 func (l *ToLog) Warningf(format string, a ...any) *ToLog {
 	l.logType = ToLogStatusWarning
-	l.logContext = fmt.Sprintf(format, a)
+	l.logContext = fmt.Sprintf(format, a...)
 	CreateFullLog(l)
 	return l
 }
@@ -126,7 +126,7 @@ func (l *ToLog) Warningf(format string, a ...any) *ToLog {
 // Warningln sets the log type to "warning" and sets the log context with a newline for an existing ToLog instance.
 func (l *ToLog) Warningln(a ...any) *ToLog {
 	l.logType = ToLogStatusWarning
-	l.logContext = fmt.Sprintln(a)
+	l.logContext = fmt.Sprintln(a...)
 	CreateFullLog(l)
 	return l
 }
@@ -142,7 +142,7 @@ func (l *ToLog) Error(ctx string) *ToLog {
 // Errorf sets the log type to "error" and sets the formatted log context for an existing ToLog instance.
 func (l *ToLog) Errorf(format string, a ...any) *ToLog {
 	l.logType = ToLogStatusError
-	l.logContext = fmt.Sprintf(format, a)
+	l.logContext = fmt.Sprintf(format, a...)
 	CreateFullLog(l)
 	return l
 }
@@ -150,7 +150,7 @@ func (l *ToLog) Errorf(format string, a ...any) *ToLog {
 // Errorln sets the log type to "error" and sets the log context with a newline for an existing ToLog instance.
 func (l *ToLog) Errorln(a ...any) *ToLog {
 	l.logType = ToLogStatusError
-	l.logContext = fmt.Sprintln(a)
+	l.logContext = fmt.Sprintln(a...)
 	CreateFullLog(l)
 	return l
 }
@@ -166,7 +166,7 @@ func (l *ToLog) Notice(ctx string) *ToLog {
 // Noticef sets the log type to "notice" and sets the formatted log context for an existing ToLog instance.
 func (l *ToLog) Noticef(format string, a ...any) *ToLog {
 	l.logType = ToLogStatusNotice
-	l.logContext = fmt.Sprintf(format, a)
+	l.logContext = fmt.Sprintf(format, a...)
 	CreateFullLog(l)
 	return l
 }
@@ -174,7 +174,7 @@ func (l *ToLog) Noticef(format string, a ...any) *ToLog {
 // Noticeln sets the log type to "notice" and sets the log context with a newline for an existing ToLog instance.
 func (l *ToLog) Noticeln(a ...any) *ToLog {
 	l.logType = ToLogStatusNotice
-	l.logContext = fmt.Sprintln(a)
+	l.logContext = fmt.Sprintln(a...)
 	CreateFullLog(l)
 	return l
 }
@@ -190,7 +190,7 @@ func (l *ToLog) Debug(ctx string) *ToLog {
 // Debugf sets the log type to "debug" and sets the formatted log context for an existing ToLog instance.
 func (l *ToLog) Debugf(format string, a ...any) *ToLog {
 	l.logType = ToLogStatusDebug
-	l.logContext = fmt.Sprintf(format, a)
+	l.logContext = fmt.Sprintf(format, a...)
 	CreateFullLog(l)
 	return l
 }
@@ -198,7 +198,7 @@ func (l *ToLog) Debugf(format string, a ...any) *ToLog {
 // Debugln sets the log type to "debug" and sets the log context with a newline for an existing ToLog instance.
 func (l *ToLog) Debugln(a ...any) *ToLog {
 	l.logType = ToLogStatusDebug
-	l.logContext = fmt.Sprintln(a)
+	l.logContext = fmt.Sprintln(a...)
 	CreateFullLog(l)
 	return l
 }
