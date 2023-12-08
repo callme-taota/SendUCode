@@ -1,0 +1,21 @@
+# 使用 golang:1.20.6 作为基础镜像
+FROM golang:1.20.6
+
+# 设置工作目录
+WORKDIR /senducode-be
+
+# 复制 go.mod 和 go.sum 文件并下载依赖
+COPY go.mod go.sum ./
+RUN go mod download
+
+# 将整个项目复制到工作目录
+COPY . .
+
+# 编译应用程序
+RUN go build main.go
+
+# 暴露应用程序需要的端口
+EXPOSE 3003
+
+# 设置启动命令
+CMD ["./main"]
