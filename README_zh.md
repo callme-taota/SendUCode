@@ -61,7 +61,20 @@ go build main.go
 ```
 
 ## Docker
-还没写好，即将来临
+Docker环境不带有redis环境，因此需要自行运行redis环境
+```
+git clone https://github.com/callme-taota/SendUCode.git
+cd SendUCode
+docker build -t SendUCode .
+docker run -e REDIS_HOST=host.docker.internal -p 3003:3003 SendUCode
+```
+| Environment Option | 解释              |
+|--------------------|-----------------|
+| REDIS_HOST         | Redis 服务地址      |
+| REDIS_PORT         | Redis 服务端口      |
+| REDIS_PASSWORD     | Redis 服务密码      |
+| REDIS_DB           | Redis 服务DB      |
+| SERVER_PORT        | 当前后端运行端口        |
 
 ## 联系我
 [我的小站](http://www.callmetaota.fun)

@@ -2,6 +2,7 @@ package conf
 
 import (
 	"fmt"
+	"os"
 	"senducode/tolog"
 	"senducode/utils"
 )
@@ -31,7 +32,8 @@ func InitConf() error {
 
 	serverMap := confjson["server"]
 	server := utils.JSONConvertToMapString(serverMap)
-	name, version, port, model := server["name"], server["version"], server["port"], server["model"]
+	port := getEnv("SERVER_PORT", server["port"])
+	name, version, model := server["name"], server["version"], server["model"]
 	Server.Port, Server.Model = port, model
 
 	tolog.Log().Info("SendUCode-Server Conf Start").PrintAndWriteSafe()
@@ -42,8 +44,19 @@ func InitConf() error {
 
 	cacheMap := confjson["redis"]
 	cache := utils.JSONConvertToMapString(cacheMap)
-	cacheHost, cachePort, cachePassword, cacheDB := cache["host"], cache["port"], cache["password"], cache["db"]
+	cacheHost := getEnv("REDIS_HOST", cache["host"])
+	cachePort := getEnv("REDIS_PORT", cache["port"])
+	cachePassword := getEnv("REDIS_PASSWORD", cache["password"])
+	cacheDB := getEnv("REDIS_DB", cache["db"])
 	CacheConf.Host, CacheConf.Port, CacheConf.Password, CacheConf.DB = cacheHost, cachePort, cachePassword, cacheDB
 
 	return nil
+}
+
+// getEnv 函数用于获取环境变量的值，如果不存在则使用默认值
+func getEnv(key, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
 }

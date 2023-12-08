@@ -60,7 +60,20 @@ go build main.go
 ```
 
 ## Docker
-Not ready, reach soon....
+This dockerfile doesn't contains redis environment , so you have to run redis server yourself .
+```
+git clone https://github.com/callme-taota/SendUCode.git
+cd SendUCode
+docker build -t SendUCode .
+docker run -e REDIS_HOST=host.docker.internal -p 3003:3003 SendUCode
+```
+| Environment Option | Description                |
+|--------------------|----------------------------|
+| REDIS_HOST         | Redis server host          |
+| REDIS_PORT         | Redis server port          |
+| REDIS_PASSWORD     | Redis server password      |
+| REDIS_DB           | Redis server db            |
+| SERVER_PORT        | This server listening port |
 
 ## Contact
 [My website](http://www.callmetaota.fun)

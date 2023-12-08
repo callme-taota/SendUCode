@@ -20,10 +20,10 @@ func InitServer() {
 	config.AllowHeaders = []string{"Origin", "Referer", "User-Agent", "Content-Type", "Authorization"} // 根据实际需要添加其他 header
 	ginServer.Use(cors.New(config))
 	Server = ginServer
-	tolog.Log().Info("Gin主服务已开启").PrintAndWriteSafe()
+	tolog.Log().Info("Gin Main Server Start").PrintAndWriteSafe()
 	port := conf.Server.Port
 	LinkAPI()
-	tolog.Log().Infoln("Gin监听开启 端口:"+port, "本地地址 http://127.0.0.1:"+port).PrintAndWriteSafe()
+	tolog.Log().Infoln("Gin listing on:"+port, "host: http://127.0.0.1:"+port).PrintAndWriteSafe()
 	ginServer.Run(fmt.Sprintf(":%s", port))
 }
 

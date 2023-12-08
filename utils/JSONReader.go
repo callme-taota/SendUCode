@@ -20,7 +20,7 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	// 拼接文件路径
 	absPath := filepath.Join(rootDir, filePath)
 
-	tolog.Log().Infof("读取JSON文件:%s", absPath).PrintLog()
+	tolog.Log().Infof("read json file:%s", absPath).PrintLog()
 
 	// 读取文件内容
 	fileContent, err := os.ReadFile(absPath)
