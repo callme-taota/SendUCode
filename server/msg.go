@@ -10,6 +10,7 @@ import (
 	"strconv"
 )
 
+// LinkMsg creates a new message-related route group.
 func LinkMsg() {
 	tolog.Log().Info("Server-msg Create link").PrintAndWriteSafe()
 	msgGroup := Server.Group("/msg")
@@ -17,6 +18,7 @@ func LinkMsg() {
 	msgGroup.GET("/", getMsgs)
 }
 
+// getMsgs retrieves messages for a user based on their session.
 func getMsgs(c *gin.Context) {
 	session := c.GetHeader("session")
 	limitStr := c.Query("limit")
@@ -25,8 +27,8 @@ func getMsgs(c *gin.Context) {
 	}
 	limit, err := strconv.Atoi(limitStr)
 	if err != nil {
-		tolog.Log().Warningf("limit need integer , err: %e", err)
-		c.JSON(http.StatusOK, gin.H{"msg": "limit need integer"})
+		tolog.Log().Warningf("limit needs to be an integer, err: %e", err)
+		c.JSON(http.StatusOK, gin.H{"msg": "limit needs to be an integer"})
 		return
 	}
 	userid, err := cache.GetUserIDByUserSession(session)
@@ -35,11 +37,12 @@ func getMsgs(c *gin.Context) {
 		return
 	}
 
-	tolog.Log().Infof("Get message for user: %s", userid).PrintLog()
+	tolog.Log().Infof("Get messages for user: %s", userid).PrintLog()
 	msgs, err := cache.GetMessagesFromSortedSetLimit(session, limit)
 	c.JSON(http.StatusOK, msgs)
 }
 
+// newMsg handles the creation of a new message.
 func newMsg(c *gin.Context) {
 	session := c.GetHeader("session")
 	userAgent := c.GetHeader("User-Agent")
@@ -58,6 +61,7 @@ func newMsg(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"msg": "send success"})
 }
 
+// handleMessage creates a new message and adds it to the user's message list in Redis.
 func handleMessage(session, userAgent, message string) {
 	msg, err := cache.CreateMessage(message, userAgent)
 	if err != nil {
@@ -72,6 +76,7 @@ func handleMessage(session, userAgent, message string) {
 	tolog.Log().Infof("Received message from user %s: %s", session, message)
 }
 
+// broadcastMessage sends a message to all connected clients for a given user session.
 func broadcastMessage(session string, message cache.Message) {
 	messageJSON, _ := json.Marshal(message)
 	for id, client := range clients[session] {

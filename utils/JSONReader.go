@@ -8,28 +8,29 @@ import (
 	"senducode/tolog"
 )
 
+// JSONReader reads and parses JSON content from a file.
 func JSONReader(filePath string) (map[string]interface{}, error) {
-
-	// 获取项目根目录路径
+	// Get the current working directory.
 	rootDir, err := os.Getwd()
 	if err != nil {
 		tolog.Log().Errorf("jsonReader %e", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
-	// 拼接文件路径
+	// Concatenate the file path.
 	absPath := filepath.Join(rootDir, filePath)
 
+	// Log the read JSON file path.
 	tolog.Log().Infof("read json file:%s", absPath).PrintLog()
 
-	// 读取文件内容
+	// Read the file content.
 	fileContent, err := os.ReadFile(absPath)
 	if err != nil {
 		tolog.Log().Errorf("jsonReader %e", err).PrintAndWriteSafe()
 		return nil, err
 	}
 
-	// 解析 JSON
+	// Parse JSON.
 	var jsonData map[string]interface{}
 	err = json.Unmarshal(fileContent, &jsonData)
 	if err != nil {
@@ -40,24 +41,26 @@ func JSONReader(filePath string) (map[string]interface{}, error) {
 	return jsonData, nil
 }
 
+// JSONConvertToMapString converts a map with arbitrary types to a map with string values.
 func JSONConvertToMapString(originalMap interface{}) map[string]string {
 	convertedMap := make(map[string]string)
-	// 遍历原始映射
+
+	// Iterate over the original map.
 	for key, value := range originalMap.(map[string]interface{}) {
-		// 使用类型断言检查值的类型
+		// Use type assertion to check the value's type.
 		switch v := value.(type) {
 		case int:
-			// 将 int 转换为字符串
+			// Convert int to string.
 			convertedMap[key] = fmt.Sprintf("%d", v)
 		case float64:
-			// 将 float64 转换为字符串
+			// Convert float64 to string.
 			convertedMap[key] = fmt.Sprintf("%f", v)
 		case string:
-			// 字符串类型直接复制
+			// Copy string type directly.
 			convertedMap[key] = v
 		default:
-			// 其他类型可以根据需要进行处理
-			// 这里可以添加额外的类型转换规则
+			// Handle other types as needed.
+			// Additional type conversion rules can be added here.
 			tolog.Log().Warningf("Unsupported type for key %s", key).PrintAndWriteSafe()
 		}
 	}
