@@ -17,13 +17,14 @@ This is not necessary if your device are in the same network environment. But ne
 
 ## APIs 
 
-| Description          | Methods | Port        | Query           | Header              | Result                   |
-|----------------------|---------|-------------|-----------------|---------------------|--------------------------|
-| Get message list     | GET     | /msg        | limit           | session             | [{detail, device, time}] |
-| Send message         | POST    | /msg        | message         | session, User-Agent | {msg}                    |
-| CheckUsingSession    | POST    | /user/check | session         |                     | {ok, message, userid}    |
-| CreatUser            | POST    | /user       | userid          |                     | {ok, msg, session}       |
-| WebSocket connection | WS      | /user/ws    | session(Params) | User-Agent          |                          |
+| Description          | Methods | Port        | Query           | Header              | Result                    |
+|----------------------|---------|-------------|-----------------|---------------------|---------------------------|
+| Get message list     | GET     | /msg        | limit           | session             | [{detail, device, time }] |
+| Send message         | POST    | /msg        | message         | session, User-Agent | {msg}                     |
+| CheckUsingSession    | POST    | /user/check | session         |                     | {ok, msg, userid }        |
+| CreatUser            | POST    | /user       | userid          |                     | {ok, msg, session }       |
+| DeleteUser           | DELETE  | /user       | session         |                     | {ok, msg }                |
+| WebSocket connection | WS      | /user/ws    | session(Params) | User-Agent          |                           |
 
 ## Quick Start 
 ```

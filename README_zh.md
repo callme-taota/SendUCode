@@ -18,13 +18,14 @@
 
 ## APIs
 
-| Description  | Methods | Port        | Query           | Header              | Result                   |
-|--------------|---------|-------------|-----------------|---------------------|--------------------------|
-| 获取消息列表       | GET     | /msg        | limit           | session             | [{detail, device, time}] |
-| 发送消息         | POST    | /msg        | message         | session, User-Agent | {msg}                    |
-| 确认用户的session | POST    | /user/check | session         |                     | {ok, message, userid}    |
-| 新建用户         | POST    | /user       | userid          |                     | {ok, msg, session}       |
-| WebSocket 连接 | WS      | /user/ws    | session(Params) | User-Agent          |                          |
+| Description  | Methods | Port        | Query           | Header              | Result                    |
+|--------------|---------|-------------|-----------------|---------------------|---------------------------|
+| 获取消息列表       | GET     | /msg        | limit           | session             | [{detail, device, time }] |
+| 发送消息         | POST    | /msg        | message         | session, User-Agent | {msg}                     |
+| 确认用户的session | POST    | /user/check | session         |                     | {ok, message, userid }    |
+| 新建用户         | POST    | /user       | userid          |                     | {ok, msg, session }       |
+| 删除用户         | DELETE  | /user       | session         |                     | {ok, msg, session }       |
+| WebSocket 连接 | WS      | /user/ws    | session(Params) | User-Agent          |                           |
 
 ## 快速启动
 ```
