@@ -53,7 +53,6 @@ func InitConf() error {
 	return nil
 }
 
-// getEnv 函数用于获取环境变量的值，如果不存在则使用默认值
 func getEnv(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value

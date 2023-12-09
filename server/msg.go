@@ -52,15 +52,12 @@ func newMsg(c *gin.Context) {
 
 	tolog.Log().Infof("New message from user: %s", userid).PrintLog()
 
-	// 处理接收到的消息，你可以根据消息内容进行逻辑处理
 	handleMessage(session, userAgent, message)
 	msg, _ := cache.GetMessagesFromSortedSet(session)
-	// 如果你要将消息广播给其他设备，可以调用 broadcastMessage 函数
 	broadcastMessage(session, msg[0])
 	c.JSON(http.StatusOK, gin.H{"msg": "send success"})
 }
 
-// 处理接收到的消息的函数
 func handleMessage(session, userAgent, message string) {
 	msg, err := cache.CreateMessage(message, userAgent)
 	if err != nil {
@@ -75,7 +72,6 @@ func handleMessage(session, userAgent, message string) {
 	tolog.Log().Infof("Received message from user %s: %s", session, message)
 }
 
-// 广播消息给其他设备的函数
 func broadcastMessage(session string, message cache.Message) {
 	messageJSON, _ := json.Marshal(message)
 	for id, client := range clients[session] {

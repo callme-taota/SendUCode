@@ -2,6 +2,7 @@ package cache
 
 import (
 	"github.com/go-redis/redis"
+	"senducode/tolog"
 	"senducode/utils"
 )
 
@@ -35,7 +36,6 @@ func AddUser(userID string) (string, error) {
 func GetUserSessionByID(userID string) (string, error) {
 	session, err := RedisClient.HGet(forwardHash, userID).Result()
 	if err == redis.Nil {
-		// Key (userID) does not exist
 		return "", nil
 	} else if err != nil {
 		return "", err
@@ -46,10 +46,33 @@ func GetUserSessionByID(userID string) (string, error) {
 func GetUserIDByUserSession(session string) (string, error) {
 	userid, err := RedisClient.HGet(reverseLookupHash, session).Result()
 	if err == redis.Nil {
-		// Key (session) does not exist
 		return "", nil
 	} else if err != nil {
 		return "", err
 	}
 	return userid, nil
+}
+
+func DeleteUserBySession(session string) (bool, error) {
+	userid, err := GetUserIDByUserSession(session)
+	if err != nil {
+		tolog.Log().Errorf("DeleteUserBySession : %e", err)
+		return false, err
+	}
+	err = RedisClient.HDel(reverseLookupHash, session).Err()
+	if err != nil {
+		tolog.Log().Errorf("DeleteUserBySession : %e", err)
+		return false, err
+	}
+	err = RedisClient.HDel(forwardHash, userid).Err()
+	if err != nil {
+		tolog.Log().Errorf("DeleteUserBySession : %e", err)
+		return false, err
+	}
+	err = RedisClient.Del(session).Err()
+	if err != nil {
+		tolog.Log().Errorf("DeleteUserBySession : %e", err)
+		return false, err
+	}
+	return true, nil
 }

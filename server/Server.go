@@ -12,12 +12,11 @@ var Server *gin.Engine
 
 func InitServer() {
 	ginServer := gin.Default()
-	// 使用CORS中间件
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"*"} // 这里设置允许所有来源，可以根据需要指定具体的域名
+	config.AllowOrigins = []string{"*"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowCredentials = true
-	config.AllowHeaders = []string{"Origin", "Referer", "User-Agent", "Content-Type", "Authorization"} // 根据实际需要添加其他 header
+	config.AllowHeaders = []string{"Origin", "Referer", "User-Agent", "Content-Type", "Authorization"}
 	ginServer.Use(cors.New(config))
 	Server = ginServer
 	tolog.Log().Info("Gin Main Server Start").PrintAndWriteSafe()
