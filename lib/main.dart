@@ -29,9 +29,11 @@ class _MyAppState extends State<MyApp> {
       title: 'Sender',
       theme: ThemeData(colorScheme: const ColorScheme.light()), // 亮色主题
       darkTheme: ThemeData(colorScheme: const ColorScheme.dark()), // 主题模式
-      themeMode: Provider.of<ThemeProvider>(context).isDarkMode
-          ? ThemeMode.dark
-          : ThemeMode.light,
+       themeMode: Provider.of<ThemeProvider>(context).isSystemMode
+        ? ThemeMode.system
+        : (Provider.of<ThemeProvider>(context).isDarkMode
+            ? ThemeMode.dark
+            : ThemeMode.light),
       home: Layout(),
     );
   }

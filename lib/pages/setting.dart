@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sender/widgets/SettingItem.dart';
 import 'package:sender/stroe/ThemeProvider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -7,25 +8,45 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-mixin _SettingPageMixin <T extends StatefulWidget> on State<T> {
-  bool isDarkMode = ThemeProvider().isDarkMode;
-  final List<String> dropdownItems = ['Local Network', 'Composite Connection', 'Server Only'];
-  void DarkModeChange(value){
+mixin _SettingPageMixin<T extends StatefulWidget> on State<T> {
+  final List<String> modeItems = ['System', 'Light Mode', 'Dark Mode'];
+  String sysMode = "System";
+  final List<String> dropdownItems = [
+    'Local Network',
+    'Composite Connection',
+    'Server Only'
+  ];
+  String userName = "";
+
+  void darkModeChange(value) {
     setState(() {
-      isDarkMode = value;
-      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+      sysMode = value;
+      switch (value) {
+        case "System":
+          Provider.of<ThemeProvider>(context, listen: false)
+              .toggleSystemMode(true);
+          return;
+        case "Light Mode":
+          Provider.of<ThemeProvider>(context, listen: false)
+              .toggleSystemMode(false);
+          Provider.of<ThemeProvider>(context, listen: false).setLight();
+          return;
+        case "Dark Mode":
+          Provider.of<ThemeProvider>(context, listen: false)
+              .toggleSystemMode(false);
+          Provider.of<ThemeProvider>(context, listen: false).setDark();
+          return;
+      }
     });
   }
 }
 
-
 class _SettingPageState extends State<SettingPage> with _SettingPageMixin {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: const Center(child: Text('Settings')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,72 +54,58 @@ class _SettingPageState extends State<SettingPage> with _SettingPageMixin {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SettingItem(
-              title: 'Dark Mode',
-              widgetOnRight: Switch(
-                value: isDarkMode,
-                onChanged: (value) {
-                  DarkModeChange(value);
-                },
-              ),
-            ),
+                title: 'Dark Mode',
+                margin: 6,
+                widgetOnRight: DropdownButton<String>(
+                  items: modeItems.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    darkModeChange(value);
+                  },
+                  value: sysMode,
+                )),
             SettingItem(
               title: 'Scan QR Code',
+              margin: 6,
               widgetOnRight: ElevatedButton(
                 onPressed: () {
                   // 处理扫码操作
                 },
-                child: Text('Scan'),
+                child: const Text('Scan'),
               ),
             ),
             SettingItem(
               title: 'Delete User Records',
+              margin: 6,
               widgetOnRight: ElevatedButton(
                 onPressed: () {
                   // 处理删除用户记录操作
                 },
-                child: Text('Delete'),
+                child: const Text('Delete'),
               ),
             ),
             SettingItem(
               title: 'Connection Mode',
+              margin: 6,
               widgetOnRight: DropdownButton<String>(
-                items: dropdownItems
-                    .map((String value) {
+                items: dropdownItems.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  
-                },
+                onChanged: (value) {},
                 value: 'Local Network', // 初始值，你需要根据实际情况设置
               ),
             ),
+            SettingItem(title: "Current username",margin: 10, widgetOnRight: Text(userName)),
           ],
         ),
       ),
-    );
-  }
-}
-
-class SettingItem extends StatelessWidget {
-  final String title;
-  final Widget widgetOnRight;
-
-  const SettingItem({
-    required this.title,
-    required this.widgetOnRight,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title),
-        widgetOnRight,
-      ],
     );
   }
 }
