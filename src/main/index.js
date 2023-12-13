@@ -1,7 +1,12 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+//store
+import Store from 'electron-store';
+
+app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+app.commandLine.appendSwitch('disable-web-security');
 
 const macOptions = {
   titleBarStyle: "hidden",
@@ -25,9 +30,22 @@ function createWindow() {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
+      nodeIntegration: true,
       experimentalFeatures: true
     }
   })
+
+  const store = new Store();
+  // 定义ipcRenderer监听事件
+  ipcMain.on('setStore', (_, key, value) => {
+    store.set(key, value)
+  })
+
+  ipcMain.on('getStore', (_, key) => {
+    let value = store.get(key)
+    _.returnValue = value || ""
+  })
+
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

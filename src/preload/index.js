@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { contextBridge,ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -18,3 +18,18 @@ if (process.contextIsolated) {
   window.electron = electronAPI
   window.api = api
 }
+
+const electronHandler = {
+  ipcRenderer: {
+    setStoreValue: (key, value) => {
+      ipcRenderer.send("setStore", key, value)
+    },
+
+    getStoreValue(key) {
+      const resp = ipcRenderer.sendSync("getStore", key)
+      return resp
+    },
+  }
+}
+
+contextBridge.exposeInMainWorld('electronHandler', electronHandler);

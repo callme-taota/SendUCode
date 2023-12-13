@@ -4,8 +4,15 @@
   --text : rgb(200,200,200);
 
   /* hoverBlock */
-  --hoverBlock-button-bg :  rgba(50, 50, 50, 0);
+  --hoverBlock-button-bg :  rgba(50, 50, 50, 0.3);
   --hoverBlock-button-bg-hover :  rgba(50, 50, 50, 0.8);
   --hoverBlock-button-bg-active :  rgba(50, 50, 50, 0.65);
   --hoverBlock-button-bg-select :  rgba(52, 120, 255, 0.9);
+
+  --messageBox-bg : rgba(50,50, 50, 0.2);
+  --messageBox-bg-hover : rgba(200, 200, 200, 0.05);
+  --messageBox-bg-active : rgba(200, 200, 200, 0.03);
+
+
+  --scroll-track : rgba(100,100, 100, 0.4);
 }

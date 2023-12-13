@@ -13,3 +13,8 @@ export function GetSystemType(){
   }
   return "other";
 }
+
+
+export function CopyToClipboard(msg) {
+  navigator.clipboard.writeText(msg)
+}
