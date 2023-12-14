@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sender/widgets/SettingItem.dart';
 import 'package:sender/stroe/ThemeProvider.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -11,12 +12,29 @@ class SettingPage extends StatefulWidget {
 mixin _SettingPageMixin<T extends StatefulWidget> on State<T> {
   final List<String> modeItems = ['System', 'Light Mode', 'Dark Mode'];
   String sysMode = "System";
-  final List<String> dropdownItems = [
+  final List<String> netWorkItems = [
     'Local Network',
     'Composite Connection',
     'Server Only'
   ];
+  String SelectedNetwork = "Local Network";
+  String ScanResult = "";
   String userName = "";
+
+  void _setDefaultMode() async {
+    String defaultMode =
+        await Provider.of<ThemeProvider>(context, listen: false)
+            .getDefaultMode();
+    setState(() {
+      sysMode = defaultMode;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setDefaultMode();
+  }
 
   void darkModeChange(value) {
     setState(() {
@@ -37,6 +55,25 @@ mixin _SettingPageMixin<T extends StatefulWidget> on State<T> {
           Provider.of<ThemeProvider>(context, listen: false).setDark();
           return;
       }
+    });
+  }
+
+  void _scanQRCode() async {
+    var options = const ScanOptions(
+        strings: {
+          'cancel': "取消扫描",
+          'flash_on': "打开闪光灯",
+          'flash_off': "关闭闪光灯",
+        },
+        android: AndroidOptions(
+          aspectTolerance : 0.5,
+          useAutoFocus :true,
+        ),
+        restrictFormat:[BarcodeFormat.qr]
+        );
+    var result = await BarcodeScanner.scan(options: options);
+    setState(() {
+      ScanResult = result.rawContent;
     });
   }
 }
@@ -73,7 +110,7 @@ class _SettingPageState extends State<SettingPage> with _SettingPageMixin {
               margin: 6,
               widgetOnRight: ElevatedButton(
                 onPressed: () {
-                  // 处理扫码操作
+                  _scanQRCode();
                 },
                 child: const Text('Scan'),
               ),
@@ -92,17 +129,20 @@ class _SettingPageState extends State<SettingPage> with _SettingPageMixin {
               title: 'Connection Mode',
               margin: 6,
               widgetOnRight: DropdownButton<String>(
-                items: dropdownItems.map((String value) {
+                items: netWorkItems.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
                 onChanged: (value) {},
-                value: 'Local Network', // 初始值，你需要根据实际情况设置
+                value: SelectedNetwork, // 初始值，你需要根据实际情况设置
               ),
             ),
-            SettingItem(title: "Current username",margin: 10, widgetOnRight: Text(userName)),
+            SettingItem(
+                title: "Current username",
+                margin: 10,
+                widgetOnRight: Text(userName)),
           ],
         ),
       ),
