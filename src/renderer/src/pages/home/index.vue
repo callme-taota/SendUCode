@@ -8,6 +8,8 @@ const userStore = useUserStore()
 const { msgList } = storeToRefs(userStore)
 
 onMounted(async()=>{
+  let flag = await userStore.checkSession()
+  if(flag == false) return
   userStore.getMsgs()
   userStore.listiner()
 })

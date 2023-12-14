@@ -31,5 +31,4 @@ const electronHandler = {
     },
   }
 }
-
 contextBridge.exposeInMainWorld('electronHandler', electronHandler);

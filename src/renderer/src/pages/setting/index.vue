@@ -11,22 +11,28 @@ import iClose from "../../components/icon/icons/iClose.vue";
 
 const userStore = useUserStore()
 const appStore = useAppStore()
-const { session,userID } = storeToRefs(userStore)
+const { session,userID,checked } = storeToRefs(userStore)
 const { qrColor_fill,qrColor_blank,btnColor } = storeToRefs(appStore)
 
-const list = ref([
+const modeList = ref([
   { text: "浅色模式", value: 1, active: false },
   { text: "深色模式", value: 2, active: false },
   { text: "跟随系统", value: 3, active: true },
 ])
-const qrCode = ref([
+const qrCodeList = ref([
   { text: "二维码", value: 1, active: false }
+])
+const delLinkList = ref([
+  { text: "删除", value: 1, active: false }
+])
+const userList = ref([
+  { text: "创建用户", value: 1, active: false }
 ])
 const qrShow = ref(false)
 
 const changeTheme = (value) => {
   appStore.SetTheme(value)
-  let l = list.value;
+  let l = modeList.value;
   for (let i = 0; i < l.length; i++) {
     if (l[i].value == value) {
       l[i].active = true;
@@ -34,7 +40,7 @@ const changeTheme = (value) => {
     }
     l[i].active = false;
   }
-  list.value = l;
+  modeList.value = l;
 }
 const userClick = () => {
   qrShow.value = true;
@@ -42,20 +48,32 @@ const userClick = () => {
 const closeQr = () => {
   qrShow.value = false;
 }
+const delUserData = () => {
+  userStore.delUserData()
+}
+const createUser = async () => {
+  await userStore.setUserID("zxxxx")
+}
 </script>
 <template>
   <div class="set-cont">
     <div class="set-inner-cont">
       <p class="set-title">设置</p>
+      <!-- Settings -->
       <card title="主题">
-        <options @change="changeTheme" :options="list"></options>
+        <options @change="changeTheme" :options="modeList"></options>
       </card>
       <card title="用户名">
-        <div class="card-left">{{ userID }}</div>
+        <div class="card-left" v-if="checked">{{ userID }}</div>
+        <options v-else @change="createUser" :options="userList"></options>
       </card>
       <card title="连接">
-        <options @change="userClick" :options="qrCode"></options>
+        <options @change="userClick" :options="qrCodeList"></options>
       </card>
+      <card title="删除用户">
+        <options @change="delUserData" :options="delLinkList"></options>
+      </card>
+      <!-- Popup -->
       <div class="qr-cont" v-show="qrShow">
         <vue-qr :text="session" :size="200" :margin="0" :colorLight="qrColor_blank" :colorDark="qrColor_fill"/>
         <div class="qr-close" @click="closeQr">

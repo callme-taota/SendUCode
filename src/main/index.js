@@ -40,12 +40,10 @@ function createWindow() {
   ipcMain.on('setStore', (_, key, value) => {
     store.set(key, value)
   })
-
   ipcMain.on('getStore', (_, key) => {
     let value = store.get(key)
     _.returnValue = value || ""
   })
-
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

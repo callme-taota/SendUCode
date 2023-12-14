@@ -2,20 +2,20 @@ import { defineStore } from "pinia";
 import { CheckUsingSession } from "../../api/user";
 import { getMsg } from "../../api/msg";
 import { MsgWs } from "../../api";
-import { CreateUser } from "../../api/user";
+import { CreateUser,DeleteUser } from "../../api/user";
 
 const getUserData = () => {
   return window.electronHandler.ipcRenderer.getStoreValue("userData");
 }
-const setUserID = (userID) => {
+const setUserID = (userID = "") => {
   let userData = getUserData()
   userData.userID = userID;
-  window.electronHandler.ipcRenderer.setStoreValue("userData",userData);
+  window.electronHandler.ipcRenderer.setStoreValue("userData", userData);
 }
-const setSession = (session) => {
+const setSession = (session = "") => {
   let userData = getUserData()
   userData.session = session;
-  window.electronHandler.ipcRenderer.setStoreValue("userData",userData);
+  window.electronHandler.ipcRenderer.setStoreValue("userData", userData);
 }
 
 export const useUserStore = defineStore("userStore", {
@@ -23,19 +23,23 @@ export const useUserStore = defineStore("userStore", {
     userID: getUserData().userID,
     session: getUserData().session,
     conn: false,
+    checked: false,
     msgList: [],
     noticeList: [],
   }),
   actions: {
     async checkSession() {
-      let res = await CheckUsingSession(this.session)
-      if (res.ok == false) {
+      let session = this.session
+      let res = await CheckUsingSession(session)
+      if (res.ok == "false") {
         setUserID()
         setSession()
         this.userID = getUserData().userID
         this.session = getUserData().session
+        this.checked = false
         return false
       } else {
+        this.checked = true
         return true
       }
     },
@@ -44,6 +48,10 @@ export const useUserStore = defineStore("userStore", {
         this.conn = false
       }
       let res = await getMsg()
+      if (res.ok == "false") {
+        this.msgList = []
+        return false
+      }
       this.msgList = res
     },
     async listiner() {
@@ -55,11 +63,22 @@ export const useUserStore = defineStore("userStore", {
     },
     async setUserID(userid) {
       let res = await CreateUser(userid)
-      if (res.ok != true || res.ok != "true") {
+      if (res.ok != "true") {
         return false
       }
+      setUserID(userid)
       setSession(res.session)
       this.session = getUserData().session
+      this.userID = getUserData().userID
+      this.checked = true
+    },
+    async delUserData() {
+      await DeleteUser(this.session)
+      setUserID("")
+      setSession("")
+      this.userID = getUserData().userID
+      this.session = getUserData().session
+      this.checked = false
     },
     addNotice(text) {
       let t = new Date().getTime();
@@ -68,16 +87,14 @@ export const useUserStore = defineStore("userStore", {
       noticeList.push(obj);
       this.noticeList = noticeList
       setTimeout(() => {
-        this.DelMessage(t);
+        this.DelNotice(t);
       }, 2000);
     },
-    DelMessage(time) {
+    DelNotice(time) {
       let noticeList = this.noticeList;
       noticeList = noticeList.filter(obj => obj.time !== time);
       this.noticeList = noticeList
     }
-
-
   },
   getters: {
 

@@ -15,8 +15,9 @@ export const AxiosPost = async (apiaddr, data) => {
   let posturl = URL + apiaddr;
   try {
     const res = await axios.post(posturl, data, {
+      data,
       headers: {
-        'session': session.value,
+        'session': session,
       }
     });
     return res
@@ -49,6 +50,19 @@ export const AxiosGet = async (apiaddr, params = {}) => {
     throw error;
   }
 };
+
+export const AxiosDelete = async (apiaddr, params = {}) => {
+  const delUrl = URL + apiaddr;
+  try {
+    const response = await axios.delete(delUrl, {
+      params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 class WS {
   constructor(obj) {
