@@ -34,6 +34,7 @@ func getMsgs(c *gin.Context) {
 	userid, err := cache.GetUserIDByUserSession(session)
 	if err != nil {
 		tolog.Log().Errorf("Invalid session for connection").PrintLog()
+		c.JSON(http.StatusOK, gin.H{"msg": "Invalid session for connection", "ok": "false"})
 		return
 	}
 
@@ -50,6 +51,7 @@ func newMsg(c *gin.Context) {
 	userid, err := cache.GetUserIDByUserSession(session)
 	if err != nil {
 		tolog.Log().Errorf("Invalid session for connection").PrintLog()
+		c.JSON(http.StatusOK, gin.H{"msg": "Invalid session for connection", "ok": "false"})
 		return
 	}
 
@@ -58,7 +60,7 @@ func newMsg(c *gin.Context) {
 	handleMessage(session, userAgent, message)
 	msg, _ := cache.GetMessagesFromSortedSet(session)
 	broadcastMessage(session, msg[0])
-	c.JSON(http.StatusOK, gin.H{"msg": "send success"})
+	c.JSON(http.StatusOK, gin.H{"msg": "send success", "ok": "true"})
 }
 
 // handleMessage creates a new message and adds it to the user's message list in Redis.

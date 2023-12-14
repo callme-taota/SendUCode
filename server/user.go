@@ -32,11 +32,7 @@ var upgrader = websocket.Upgrader{
 
 // CreatUser handles the creation of a new user and returns a session.
 func CreatUser(c *gin.Context) {
-	userid, ok := c.GetQuery("userid")
-	if !ok {
-		c.JSON(http.StatusOK, gin.H{"msg": "err", "ok": "false", "session": ""})
-		return
-	}
+	userid := c.Query("userid")
 	userSession, _ := cache.GetUserSessionByID(userid)
 	if userSession != "" {
 		c.JSON(http.StatusOK, gin.H{"msg": "created", "ok": "false", "session": ""})
@@ -56,7 +52,7 @@ func CheckUsingSession(c *gin.Context) {
 	session := c.Query("session")
 	userid, err := cache.GetUserIDByUserSession(session)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"msg": "invalid session", "ok": "false", "userid": ""})
+		c.JSON(http.StatusOK, gin.H{"msg": "invalid session", "ok": "false", "userid": ""})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"msg": "User check successfully", "ok": "true", "userid": userid})

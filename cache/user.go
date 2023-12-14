@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"errors"
 	"github.com/go-redis/redis"
 	"senducode/tolog"
 	"senducode/utils"
@@ -56,7 +57,7 @@ func GetUserIDByUserSession(session string) (string, error) {
 	userID, err := RedisClient.HGet(reverseLookupHash, session).Result()
 	if err == redis.Nil {
 		// Return nil error if the session is not found.
-		return "", nil
+		return "", errors.New("no user")
 	} else if err != nil {
 		return "", err
 	}
