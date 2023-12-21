@@ -3,7 +3,7 @@
       "name" : "SendUCode",
       "version" : "1.0.1",
       "port" : "3003",
-      "model" : "dev",
+      "model" : "debug",
       "author" : "Taota"
     },
     "redis" : {

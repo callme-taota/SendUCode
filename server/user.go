@@ -17,10 +17,10 @@ var clientsLock sync.Mutex
 func LinkUser() {
 	tolog.Log().Info("Server-user Create link").PrintAndWriteSafe()
 	userGroup := Server.Group("/user")
-	userGroup.POST("/", CreatUser)
+	userGroup.POST("", CreatUser)
 	userGroup.POST("/check", CheckUsingSession)
 	userGroup.GET("/ws", WebSocketHandler)
-	userGroup.DELETE("/", DeleteUser)
+	userGroup.DELETE("", DeleteUser)
 }
 
 // upgrader is used to upgrade an HTTP connection to a WebSocket connection.
@@ -30,9 +30,18 @@ var upgrader = websocket.Upgrader{
 	},
 }
 
+type CreateUserJson struct {
+	UserID string `json:"userid"`
+}
+
 // CreatUser handles the creation of a new user and returns a session.
 func CreatUser(c *gin.Context) {
-	userid := c.Query("userid")
+	var cuj CreateUserJson
+	if err := c.ShouldBindJSON(&cuj); err != nil {
+		c.JSON(400, gin.H{"msg": "post data error", "ok": "false", "session": ""})
+		return
+	}
+	userid := cuj.UserID
 	userSession, _ := cache.GetUserSessionByID(userid)
 	if userSession != "" {
 		c.JSON(http.StatusOK, gin.H{"msg": "created", "ok": "false", "session": ""})
@@ -47,9 +56,18 @@ func CreatUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"msg": "success", "ok": "true", "session": session})
 }
 
+type CheckUsingSessionJSON struct {
+	Session string `json:"session"`
+}
+
 // CheckUsingSession checks the validity of a session.
 func CheckUsingSession(c *gin.Context) {
-	session := c.Query("session")
+	var cus CheckUsingSessionJSON
+	if err := c.ShouldBindJSON(&cus); err != nil {
+		c.JSON(400, gin.H{"msg": "post data error", "ok": "false", "userid": ""})
+		return
+	}
+	session := cus.Session
 	userid, err := cache.GetUserIDByUserSession(session)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"msg": "invalid session", "ok": "false", "userid": ""})

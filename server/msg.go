@@ -14,7 +14,7 @@ import (
 func LinkMsg() {
 	tolog.Log().Info("Server-msg Create link").PrintAndWriteSafe()
 	msgGroup := Server.Group("/msg")
-	msgGroup.POST("/", newMsg)
+	msgGroup.POST("", newMsg)
 	msgGroup.GET("/", getMsgs)
 }
 
@@ -43,20 +43,27 @@ func getMsgs(c *gin.Context) {
 	c.JSON(http.StatusOK, msgs)
 }
 
+type newMsgJSON struct {
+	Message string `json:"message"`
+}
+
 // newMsg handles the creation of a new message.
 func newMsg(c *gin.Context) {
 	session := c.GetHeader("session")
 	userAgent := c.GetHeader("User-Agent")
-	message := c.Query("message")
+	var nm newMsgJSON
+	if err := c.ShouldBindJSON(&nm); err != nil {
+		c.JSON(400, gin.H{"msg": "post data error", "ok": "false"})
+		return
+	}
+	message := nm.Message
 	userid, err := cache.GetUserIDByUserSession(session)
 	if err != nil {
 		tolog.Log().Errorf("Invalid session for connection").PrintLog()
 		c.JSON(http.StatusOK, gin.H{"msg": "Invalid session for connection", "ok": "false"})
 		return
 	}
-
 	tolog.Log().Infof("New message from user: %s", userid).PrintLog()
-
 	handleMessage(session, userAgent, message)
 	msg, _ := cache.GetMessagesFromSortedSet(session)
 	broadcastMessage(session, msg[0])
