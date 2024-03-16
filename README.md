@@ -11,9 +11,10 @@ This is not necessary if your device are in the same network environment. But ne
 ## Related 
 1. Windows and MacOS  
     Using electron to develop and use vue as js framework.   
-    [Go to repo]()
+    [Go to repo](https://github.com/callme-taota/SendUCode/tree/SendUCode-PC)
 2. Android and IOS  
-    Using flutter to develop.Both Android and IOS are support .
+    Using flutter to develop.Both Android and IOS are support.
+    [Go to repo](https://github.com/callme-taota/SendUCode/tree/Sender)
 
 ## APIs 
 
