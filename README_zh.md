@@ -11,10 +11,10 @@
 ## 相关
 1. Windows and MacOS  
    使用electron开发并使用vue作为js框架。  
-   [Go to repo]()
+   [Go to repo](https://github.com/callme-taota/SendUCode/tree/SendUCode-PC)
 2. Android and IOS  
-   使用flutter来发展。同时支持Android和IOS。  
-   [Go to repo]()
+   使用flutter来开发。同时支持Android和IOS。  
+   [Go to repo](https://github.com/callme-taota/SendUCode/tree/Sender)
 
 ## APIs
 
