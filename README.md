@@ -1,4 +1,4 @@
-# Cloudbox [中文](https://github.com/callme-taota/SendUCode/blob/Senducode-PC/README_zh.md)
+# Cloudbox [中文](https://github.com/callme-taota/SendUCode/blob/SendUCode-PC/README_zh.md)
 
 ## About
 
