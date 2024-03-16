@@ -2,7 +2,8 @@ import { AxiosPost, AxiosDelete } from "./index"
 
 export const CreateUser = async (userid) =>{
   let fullURL = "/user?userid=" + userid
-  let res = await AxiosPost(fullURL)
+  // let fullURL = "/user"
+  let res = await AxiosPost(fullURL,{userid})
   return res.data
 }
 
@@ -18,9 +19,3 @@ export const DeleteUser = async (session) => {
   return res.data
 }
 
-export const TestPost = async () => {
-  let fullURL = "/test?a=1&b=2"
-  let obj = {a : 1, b :"xxx"}
-  let res = await AxiosPost(fullURL,obj)
-  return res
-}

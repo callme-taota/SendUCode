@@ -8,6 +8,7 @@ import options from "../../components/option/index.vue";
 import vueQr from 'vue-qr/src/packages/vue-qr.vue'
 import icon from "../../components/icon/icon.vue";
 import iClose from "../../components/icon/icons/iClose.vue";
+import axios from "axios";
 
 const userStore = useUserStore()
 const appStore = useAppStore()
@@ -52,7 +53,7 @@ const delUserData = () => {
   userStore.delUserData()
 }
 const createUser = async () => {
-  await userStore.setUserID("zxxxx")
+  await userStore.setUserID("1a")
 }
 </script>
 <template>

@@ -5,9 +5,6 @@ import icon from '../../resources/icon.png?asset'
 //store
 import Store from 'electron-store';
 
-app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
-app.commandLine.appendSwitch('disable-web-security');
-
 const macOptions = {
   titleBarStyle: "hidden",
   vibrancy: "light",
